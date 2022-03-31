@@ -18,12 +18,14 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
     var textRecognitionRequest = VNRecognizeTextRequest()
     // Handler to get the data from this text recognition class
     var textResult:TextReconginitionResult!
+    var delegate:CameraTextResultDelegate?
     
     public override init() {
         // Handling the VNRequest to get the text from image
         super.init()
         textRecognitionRequest = VNRecognizeTextRequest(completionHandler: { [weak self] request, error in
-            self?.textResult(request, error)
+//            self?.textResult(request, error)
+            delegate?.getResultFromCamera(request, error)
         })
         textRecognitionRequest.recognitionLevel = .accurate
         textRecognitionRequest.usesLanguageCorrection = false
@@ -43,12 +45,12 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
     }
     
     // Function to be called from the class to get result
-    public func getScannedText(onView: UIViewController,resultHandler:@escaping TextReconginitionResult){
+    public func getScannedText(onView: UIViewController,callBackDelegate:CameraTextResultDelegate){
         // Use VisionKit to scan business cards
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self
         onView.present(documentCameraViewController, animated: true, completion: nil)
-        self.textResult = resultHandler
+        self.delegate = callBackDelegate
     }
 }
 
