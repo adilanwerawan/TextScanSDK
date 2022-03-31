@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Vision
 
 public protocol CameraTextResultDelegate {
     func getResultFromCamera(_ request: VNRequest?, _ error: Error?)
