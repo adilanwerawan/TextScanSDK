@@ -25,7 +25,7 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
         super.init()
         textRecognitionRequest = VNRecognizeTextRequest(completionHandler: { [weak self] request, error in
 //            self?.textResult(request, error)
-            delegate?.getResultFromCamera(request, error)
+            self?.delegate?.getResultFromCamera(request, error)
         })
         textRecognitionRequest.recognitionLevel = .accurate
         textRecognitionRequest.usesLanguageCorrection = false
