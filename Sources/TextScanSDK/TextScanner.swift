@@ -19,7 +19,7 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
     // Handler to get the data from this text recognition class
     var textResult:TextReconginitionResult!
     
-    override init() {
+    public override init() {
         // Handling the VNRequest to get the text from image
         textRecognitionRequest = VNRecognizeTextRequest(completionHandler: textResult)
         textRecognitionRequest.recognitionLevel = .accurate
