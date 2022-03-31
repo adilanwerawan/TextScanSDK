@@ -12,17 +12,14 @@ import Vision
 // Defined typealias of text recognition result for ease
 public typealias TextReconginitionResult = (_ request: VNRequest?, _ error: Error?) -> Void
 
-public class TextScanViewController: UIViewController, VNDocumentCameraViewControllerDelegate {
+public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
     
     // Using vision frame work for text recognition
     var textRecognitionRequest = VNRecognizeTextRequest()
     // Handler to get the data from this text recognition class
     var textResult:TextReconginitionResult!
     
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
+    override init() {
         // Handling the VNRequest to get the text from image
         textRecognitionRequest = VNRecognizeTextRequest(completionHandler: textResult)
         textRecognitionRequest.recognitionLevel = .accurate
@@ -43,11 +40,11 @@ public class TextScanViewController: UIViewController, VNDocumentCameraViewContr
     }
     
     // Function to be called from the class to get result
-    public func getScannedText(resultHandler:@escaping TextReconginitionResult){
+    public func getScannedText(onView: UIViewController,resultHandler:@escaping TextReconginitionResult){
         // Use VisionKit to scan business cards
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self
-        self.present(documentCameraViewController, animated: true, completion: nil)
+        onView.present(documentCameraViewController, animated: true, completion: nil)
         self.textResult = resultHandler
     }
 }
