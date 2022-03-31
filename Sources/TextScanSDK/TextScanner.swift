@@ -21,10 +21,7 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
     
     public override init() {
         // Handling the VNRequest to get the text from image
-        textRecognitionRequest = VNRecognizeTextRequest(completionHandler: textResult)
-        textRecognitionRequest.recognitionLevel = .accurate
-        textRecognitionRequest.usesLanguageCorrection = false
-        textRecognitionRequest.customWords = ["@gmail.com", "@outlook.com", "@yahoo.com", "@icloud.com"]
+        
     }
     
     // Delegate method of VNDocumentCameraViewControllerDelegate to get data from image
@@ -46,6 +43,10 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
         documentCameraViewController.delegate = self
         onView.present(documentCameraViewController, animated: true, completion: nil)
         self.textResult = resultHandler
+        textRecognitionRequest = VNRecognizeTextRequest(completionHandler: textResult)
+        textRecognitionRequest.recognitionLevel = .accurate
+        textRecognitionRequest.usesLanguageCorrection = false
+        textRecognitionRequest.customWords = ["@gmail.com", "@outlook.com", "@yahoo.com", "@icloud.com"]
     }
 }
 
