@@ -39,7 +39,8 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
     }
     
     // Function to be called from the class to get result
-    // MARK: presentOnView pass the parent view here from where you need to present scanner view, pass the view as resultView on which you have to show the results
+    /// Pass the parent view here in presentOnView from which you need to present scanner view,
+    /// Pass the view as resultView on which you have to show the results.
     public func getScannedText(presentOnView: UIViewController, resultView:UITextView,callBackDelegate:CameraTextResultDelegate){
         // Use VisionKit to scan business cards
         let documentCameraViewController = VNDocumentCameraViewController()
