@@ -48,18 +48,20 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
         presentOnView.present(documentCameraViewController, animated: true, completion: nil)
         self.delegate = callBackDelegate
         textRecognitionRequest = VNRecognizeTextRequest(completionHandler: {  request, error in
-            var recognizedText = ""
-            if let results = request.results, !results.isEmpty {
-                if let requestResults = request.results as? [VNRecognizedTextObservation] {
-                    recognizedText = ""
-                    for observation in requestResults {
-                        guard let candidiate = observation.topCandidates(1).first else { return }
-                        recognizedText += candidiate.string
-                        recognizedText += "\n"
+            DispatchQueue.main.async {
+                var recognizedText = ""
+                if let results = request.results, !results.isEmpty {
+                    if let requestResults = request.results as? [VNRecognizedTextObservation] {
+                        recognizedText = ""
+                        for observation in requestResults {
+                            guard let candidiate = observation.topCandidates(1).first else { return }
+                            recognizedText += candidiate.string
+                            recognizedText += "\n"
+                        }
+                        resultView.text = recognizedText
                     }
-                    resultView.text = recognizedText
+                    documentCameraViewController.dismiss(animated: true)
                 }
-                documentCameraViewController.dismiss(animated: true)
             }
         })
         textRecognitionRequest.recognitionLevel = .accurate
