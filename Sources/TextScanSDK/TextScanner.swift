@@ -39,15 +39,26 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
     }
     
     // Function to be called from the class to get result
-    public func getScannedText(onView: UIViewController,callBackDelegate:CameraTextResultDelegate){
+    // MARK: presentOnView pass the parent view here from where you need to present scanner view, pass the view as resultView on which you have to show the results
+    public func getScannedText(presentOnView: UIViewController, resultView:UITextView,callBackDelegate:CameraTextResultDelegate){
         // Use VisionKit to scan business cards
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self
-        onView.present(documentCameraViewController, animated: true, completion: nil)
+        presentOnView.present(documentCameraViewController, animated: true, completion: nil)
         self.delegate = callBackDelegate
-        textRecognitionRequest = VNRecognizeTextRequest(completionHandler: { [weak self] request, error in
-//            self?.textResult(request, error)
-            self?.delegate?.getResultFromCamera(request, error)
+        textRecognitionRequest = VNRecognizeTextRequest(completionHandler: {  request, error in
+            var recognizedText = ""
+            if let results = request.results, !results.isEmpty {
+                if let requestResults = request.results as? [VNRecognizedTextObservation] {
+                    recognizedText = ""
+                    for observation in requestResults {
+                        guard let candidiate = observation.topCandidates(1).first else { return }
+                        recognizedText += candidiate.string
+                        recognizedText += "\n"
+                    }
+                    resultView.text = recognizedText
+                }
+            }
         })
         textRecognitionRequest.recognitionLevel = .accurate
         textRecognitionRequest.usesLanguageCorrection = false
