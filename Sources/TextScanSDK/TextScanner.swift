@@ -35,7 +35,7 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
         } catch {
             print(error)
         }
-        controller.dismiss(animated: true)
+//        controller.dismiss(animated: true)
     }
     
     // Function to be called from the class to get result
@@ -59,6 +59,7 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
                     }
                     resultView.text = recognizedText
                 }
+                documentCameraViewController.dismiss(animated: true)
             }
         })
         textRecognitionRequest.recognitionLevel = .accurate
