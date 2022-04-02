@@ -35,7 +35,7 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
         } catch {
             print(error)
         }
-//        controller.dismiss(animated: true)
+        controller.dismiss(animated: true)
     }
     
     // Function to be called from the class to get result
@@ -48,7 +48,7 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
         presentOnView.present(documentCameraViewController, animated: true, completion: nil)
         self.delegate = callBackDelegate
         textRecognitionRequest = VNRecognizeTextRequest(completionHandler: {  request, error in
-            DispatchQueue.main.async { [weak self] in
+//            DispatchQueue.main.async { [weak self] in
                 var recognizedText = ""
                 if let results = request.results, !results.isEmpty {
                     if let requestResults = request.results as? [VNRecognizedTextObservation] {
@@ -58,13 +58,12 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
                             recognizedText += candidiate.string
                             recognizedText += "\n"
                         }
-                        self?.delegate?.getResultFromCamera(recognizedText, nil)
+                        self.delegate?.getResultFromCamera(recognizedText, nil)
                     }
-                    documentCameraViewController.dismiss(animated: true)
                 } else if error != nil{
-                    self?.delegate?.getResultFromCamera(nil, error)
+                    self.delegate?.getResultFromCamera(nil, error)
                 }
-            }
+//            }
         })
         textRecognitionRequest.recognitionLevel = .accurate
         textRecognitionRequest.usesLanguageCorrection = false
