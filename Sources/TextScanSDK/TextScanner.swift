@@ -28,6 +28,10 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
     
     // Delegate method of VNDocumentCameraViewControllerDelegate to get data from image
     public func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+        let acivityIndicator = UIActivityIndicatorView.init(style: .large)
+        controller.view.addSubview(acivityIndicator)
+        controller.view.bringSubviewToFront(acivityIndicator)
+        controller.view.isUserInteractionEnabled = false
         let image = scan.imageOfPage(at: 0)
         let handler = VNImageRequestHandler(cgImage: image.cgImage!, options: [:])
         do {
@@ -48,7 +52,7 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
         presentOnView.present(documentCameraViewController, animated: true, completion: nil)
         self.delegate = callBackDelegate
         textRecognitionRequest = VNRecognizeTextRequest(completionHandler: {  request, error in
-//            DispatchQueue.main.async { [weak self] in
+            DispatchQueue.main.async { [weak self] in
                 var recognizedText = ""
                 if let results = request.results, !results.isEmpty {
                     if let requestResults = request.results as? [VNRecognizedTextObservation] {
@@ -58,12 +62,12 @@ public class TextScanner: NSObject, VNDocumentCameraViewControllerDelegate {
                             recognizedText += candidiate.string
                             recognizedText += "\n"
                         }
-                        self.delegate?.getResultFromCamera(recognizedText, nil)
+                        self?.delegate?.getResultFromCamera(recognizedText, nil)
                     }
                 } else if error != nil{
-                    self.delegate?.getResultFromCamera(nil, error)
+                    self?.delegate?.getResultFromCamera(nil, error)
                 }
-//            }
+            }
         })
         textRecognitionRequest.recognitionLevel = .accurate
         textRecognitionRequest.usesLanguageCorrection = false
