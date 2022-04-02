@@ -9,5 +9,5 @@ import Foundation
 import Vision
 
 public protocol CameraTextResultDelegate {
-    func getResultFromCamera(_ request: VNRequest?, _ error: Error?)
+    func getResultFromCamera(_ text: String?, _ error: Error?)
 }
